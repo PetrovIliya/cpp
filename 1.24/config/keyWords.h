@@ -1,0 +1,7 @@
+#define CONST_KEY_WORD "const"
+#define RECORD_KEY_WORD "record"
+#define BEGIN_KEY_WORD "begin"
+#define END_KEY_WORD "end"
+#define CASE_KEY_WORD "case"
+#define REPEAT_KEY_WORD "repeat"
+#define UNTIL_KEY_WORD "until"

@@ -1,0 +1,9 @@
+#define BEGIN 0
+#define END 1
+#define REPEAT 2
+#define UNTIL 3
+#define RECORD 4
+#define CASE 5
+#define CONST 6
+#define TYPE 7
+#define NO_OPERATOR 8
