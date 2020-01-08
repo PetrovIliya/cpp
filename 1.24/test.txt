@@ -3,6 +3,7 @@ const = 'adasads'
 begin
 {begin}
 //begin
+begin //for error
 repeat
 case
 end
