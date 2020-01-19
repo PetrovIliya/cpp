@@ -6,4 +6,5 @@
 #define CASE 5
 #define CONST 6
 #define TYPE 7
-#define NO_OPERATOR 8
+#define OF 8
+#define NO_OPERATOR 9

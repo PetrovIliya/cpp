@@ -12,15 +12,55 @@
 #define ERROR -99999
 #define LINE_COMENTS_OPERATOR "//"
 #define SUCSSES_MESSAGE "allright"
-#define ERROR_MESSAGE "Syntax error"
+#define ERROR_MESSAGE "Syntax error at line: "
 
 using namespace std;
 
 class Handler
 {
+
+public:
+int lineCounter = 1;
+int nestingListener = 0;
+set<string> openOperators;
+set<string> closeOperators;
+FileRead fileRead;
+
+void start(FILE * f)
+{
+    initSets();
+    State state;
+    int pastOperator = NO_OPERATOR;
+    while (!feof(f))
+    { 
+        int readState = state.next(f, lineCounter);
+        switch (readState)
+        {
+            case READY_FOR_SYMBOL:
+                fileRead.symbol(f, lineCounter);
+                break;
+            case READY_FOR_WORD:
+                readWordHandler(f, pastOperator);
+                break;
+            default:
+                break;
+        }
+        if (nestingListener < 0)
+        {
+            cout << ERROR_MESSAGE + to_string(lineCounter) + " (nesting)";
+            throw exception();
+        } 	     	    
+    }
+    if(nestingListener != 0)
+    {
+        cout << ERROR_MESSAGE + to_string(lineCounter) + " (nesting)" << endl;
+        throw exception();
+    }            
+}
+
 private:
 
-void initSets(set<string> &openOperators, set<string> &closeOperators)
+void initSets()
 {
     openOperators.insert(REPEAT_KEY_WORD);
     openOperators.insert(BEGIN_KEY_WORD);
@@ -30,7 +70,7 @@ void initSets(set<string> &openOperators, set<string> &closeOperators)
     closeOperators.insert(UNTIL_KEY_WORD);
 }
 
-void nestingHandler(set<string> openOperators,  set<string> closeOperators, int &nestingListener, string word)
+void nestingHandler(string word)
 {
     if(openOperators.find(word) != openOperators.end())
     {
@@ -42,72 +82,28 @@ void nestingHandler(set<string> openOperators,  set<string> closeOperators, int 
     }
 }
 
-void readWordHandler(FILE *f, set<string> openOperators,  set<string> closeOperators, int &pastOperatorCode, int &nestingListener)
+void readWordHandler(FILE *f, int &pastOperatorCode)
 {
     FileRead fileRead;
     Operators operators;
     Syntax syntax;
     string word;
     bool isCorrect;
-    if (fileRead.word(f, word))
+    if (fileRead.word(f, word, lineCounter))
     {
-        if((openOperators.find(word) != openOperators.end()) || (closeOperators.find(word) != closeOperators.end()) || word == "const" || word == "type")
+        if((openOperators.find(word) != openOperators.end()) || (closeOperators.find(word) != closeOperators.end()) || word == "const" || word == "type" || word == "of")
         {
-            nestingHandler(openOperators, closeOperators, nestingListener, word);
+            nestingHandler(word);
             int operatorCode = operators.getCode(word);
             isCorrect = syntax.chek(pastOperatorCode, operatorCode);
             pastOperatorCode = operatorCode;
             if (!isCorrect)
             {
-                cout << ERROR_MESSAGE << endl;
+                cout << ERROR_MESSAGE + to_string(lineCounter) + " (syntax)";
                 throw exception();
             }
             
         }
     }
-}
-
-void readSymbolHandler(FILE * f)
-{
-    FileRead fileRead;
-    fileRead.symbol(f);
-}
-
-public:
-
-void start(FILE * f)
-{
-    int nestingListener = 0;
-    set<string> openOperators;
-    set<string> closeOperators;
-    initSets(openOperators, closeOperators);
-    
-    State state;
-    int pastOperator = NO_OPERATOR;
-    while (!feof(f))
-    { 
-        int readState = state.next(f);
-        switch (readState)
-        {
-            case READY_FOR_SYMBOL:
-                readSymbolHandler(f);
-                break;
-            case READY_FOR_WORD:
-                readWordHandler(f, openOperators, closeOperators, pastOperator, nestingListener);
-                break;
-            default:
-                break;
-        }
-        if (nestingListener < 0)
-        {
-            cout << ERROR_MESSAGE;
-            throw exception();
-        } 	     	    
-    }
-    if(nestingListener != 0)
-    {
-        cout << ERROR_MESSAGE << endl;
-        throw exception();
-    }            
 }
 };

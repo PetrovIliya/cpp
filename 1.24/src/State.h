@@ -7,7 +7,7 @@ using namespace std;
 class State
 {
     public: 
-int next(FILE *&f)
+int next(FILE *&f, int &lineCounter)
 {
     string specialSymbol;
     int state = NO_STATE;
@@ -19,6 +19,7 @@ int next(FILE *&f)
     else if(ch == '\n')
     {
         state = EOLN_STATE;
+        lineCounter++;
     }
     else if (ch == ' ')
     {

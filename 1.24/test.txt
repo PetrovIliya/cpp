@@ -1,11 +1,8 @@
-type
-const = 'adasads'
-begin
-{begin}
-//begin
-begin //for error
-repeat
-case
-end
-until
-end
+BEGIN
+    case test of
+    	2: 
+	case test of 
+		
+	end;
+    end;
+end;

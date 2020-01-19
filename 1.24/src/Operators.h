@@ -38,6 +38,10 @@ public:
         {
             return CONST;
         }
+        if (keyWord == "of")
+        {
+            return OF;
+        }
         if (keyWord == "type")
         {
             return TYPE;

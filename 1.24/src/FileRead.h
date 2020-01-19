@@ -11,7 +11,7 @@ class FileRead
 
 public:
 
-void symbol(FILE *&f)
+void symbol(FILE *&f, int &lineCounter)
 {
     char specialSymbol = fgetc(f);
     if (specialSymbol == '/')
@@ -21,31 +21,39 @@ void symbol(FILE *&f)
             if (specialSymbol == '/')
             {
                 skipLine(f);
+                lineCounter++;
             }
         }       
     }
     if(specialSymbol == '{')
     {
-        skipComentedBlock(f);
+        skipComentedBlock(f, lineCounter);
     }
     if(specialSymbol == '\'')
     {
-        apostropheHandler(f);
-    }
-    
+        apostropheHandler(f, lineCounter);
+    }    
 }
 
-bool word(FILE * &f, string &word)
+bool word(FILE * &f, string &word, int &lineCounter)
 {
     char symbol = '\n';
     if (!feof(f))
     {
-    symbol = fgetc(f);
-    buildWord(f, word, symbol);
+        symbol = fgetc(f);
+        if (symbol == '\n')
+        {
+            lineCounter++;
+        }
+        buildWord(f, word, symbol);
     }    
     while (!feof(f) && symbol != ' ' && symbol != '\n' && isLetter(symbol))
     {
         symbol = fgetc(f);
+        if (symbol == '\n')
+        {
+            lineCounter++;
+        }
         buildWord(f, word, symbol);
     }  
     if (!feof(f) && !isLetter(symbol) && symbol != ' ' && symbol != '\n')
@@ -64,11 +72,16 @@ bool word(FILE * &f, string &word)
 
 private :
 
-void apostropheHandler(FILE *&f)
+void apostropheHandler(FILE *&f, int &lineCounter)
 {
     while(!feof(f))
     {
         char symbol = fgetc(f);
+        if (symbol == '\n')
+        {
+            lineCounter++;
+        }
+        
         if (symbol == '\'')
         {
             return;
@@ -81,7 +94,7 @@ void apostropheHandler(FILE *&f)
             }
         }
     }
-    cout << "Syntax error";
+    cout << "Syntax error at line: " + to_string(lineCounter);
     throw exception();   
 }
 
@@ -89,7 +102,7 @@ bool isLetter(char ch)
 {
     if(ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z')
     {
-    return true;
+        return true;
     }
     else
     {
@@ -106,11 +119,15 @@ void buildWord(FILE *f, string &word, char symbol)
     }  
 }
 
-void skipComentedBlock(FILE * &f)
+void skipComentedBlock(FILE * &f, int &lineCounter)
 {
     while(!feof(f))
     {
         char symbol = fgetc(f);
+        if (symbol == '\n')
+        {
+            lineCounter++;
+        }
         if(symbol == '}')
         {
             break;
@@ -123,7 +140,7 @@ void skipLine(FILE * &f)
     char ch;
     if (!feof(f))
     {
-    ch = fgetc(f);
+        ch = fgetc(f);
     } 
     while (ch != '\n' && !feof(f))
     {
