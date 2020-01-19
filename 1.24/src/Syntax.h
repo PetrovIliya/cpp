@@ -11,7 +11,7 @@ public:
         table[BEGIN][BEGIN] = true;
         table[BEGIN][END] = true;
         table[BEGIN][REPEAT] = true;
-        table[BEGIN][UNTIL] = true;
+        table[BEGIN][UNTIL] = false;
         table[BEGIN][RECORD] = false;
         table[BEGIN][CASE] = true;
         table[BEGIN][CONST] = false;
