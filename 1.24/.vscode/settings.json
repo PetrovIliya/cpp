@@ -12,6 +12,8 @@
         "cstdio": "cpp",
         "set": "cpp",
         "xstring": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "stack": "cpp",
+        "deque": "cpp"
     }
 }

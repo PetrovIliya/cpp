@@ -1,8 +1,2 @@
-BEGIN
-    case test of
-    	2: 
-	case test of 
-		
-	end;
-    end;
-end;
+case
+end

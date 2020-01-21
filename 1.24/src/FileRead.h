@@ -121,6 +121,7 @@ void buildWord(FILE *f, string &word, char symbol)
 
 void skipComentedBlock(FILE * &f, int &lineCounter)
 {
+    int lineOfOpenCommentOperator = lineCounter;
     while(!feof(f))
     {
         char symbol = fgetc(f);
@@ -133,6 +134,8 @@ void skipComentedBlock(FILE * &f, int &lineCounter)
             break;
         }
     }
+    cout << "syntax error(not closed comment operator) at line: " + to_string(lineOfOpenCommentOperator);
+    throw exception();
 }
 
 void skipLine(FILE * &f)

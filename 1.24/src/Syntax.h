@@ -21,13 +21,13 @@ public:
         table[END][END] = true;
         table[END][REPEAT] = true;
         table[END][UNTIL] = true;
-        table[END][RECORD] = false;
+        table[END][RECORD] = true;
         table[END][CASE] = true;
         table[END][CONST] = true;
         table[END][TYPE] = true;
         table[END][OF] = false;
         table[REPEAT][BEGIN] = true;
-        table[REPEAT][END] = true;
+        table[REPEAT][END] = false;
         table[REPEAT][REPEAT] = true;
         table[REPEAT][UNTIL] = true;
         table[REPEAT][RECORD] = false;
@@ -39,7 +39,7 @@ public:
         table[UNTIL][END] = true;
         table[UNTIL][REPEAT] = true;
         table[UNTIL][UNTIL] = false;
-        table[UNTIL][RECORD] = false;
+        table[UNTIL][RECORD] = true;
         table[UNTIL][CASE] = true;
         table[UNTIL][CONST] = false;
         table[UNTIL][TYPE] = false;
@@ -90,15 +90,6 @@ public:
         table[OF][TYPE] = false;
         table[OF][BEGIN] = true;
         table[OF][OF] = false;
-        table[NO_OPERATOR][BEGIN] = true;
-        table[NO_OPERATOR][END] = false;
-        table[NO_OPERATOR][REPEAT] = false;
-        table[NO_OPERATOR][UNTIL] = false;
-        table[NO_OPERATOR][RECORD] = true;
-        table[NO_OPERATOR][CASE] = false;
-        table[NO_OPERATOR][CONST] = false;
-        table[NO_OPERATOR][TYPE] = true;
-        table[NO_OPERATOR][OF] = false;
     }
 
     bool chek(int col, int row)
