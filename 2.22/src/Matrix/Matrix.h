@@ -4,16 +4,10 @@
 #include <fstream>
 #include <map>
 
-#define NOT_FILLED 0
+#define EMPTY 0
 #define FILLED 1
 
 using namespace std;
-
-struct MatrixElement
-{
-    int flag = NOT_FILLED;
-    bool used = false;
-};
 
 class Matrix
 {
@@ -25,15 +19,20 @@ public:
         setComputerConnections(file);
         fillMatrixByElements();
         initMatrix();
-    }    
+    } 
 
-    map<int, map<int, MatrixElement>> getMatrix()
+    int getQuantityOfComputers()
+    {
+        return quantityOfComputers;
+    } 
+
+    map<int, map<int, int>> getMatrix()
     {
         return matrix;
     }
 
 private:
-    map<int, map<int, MatrixElement>> matrix;
+    map<int, map<int, int>> matrix;
     int quantityOfComputers;
     vector<vector<int>> computerConnections;
 
@@ -41,7 +40,7 @@ private:
     {
         for (vector<int> computerConnection : computerConnections)
         {
-            matrix[computerConnection[0]][computerConnection[1]].flag = FILLED;
+            matrix[computerConnection[0]][computerConnection[1]] = FILLED;
         }
     }
 
@@ -58,8 +57,7 @@ private:
         {
             for (int j = 1; j <= quantityOfComputers; j++)
             {
-                MatrixElement matrixElement;
-                matrix[i][j] = matrixElement;
+                matrix[i][j] = EMPTY;
             }
         }  
     }

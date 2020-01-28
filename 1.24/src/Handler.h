@@ -86,6 +86,10 @@ private:
         }
         operatorCode = operators.getCode(word);
         bool isCorrect = syntax.chek(stack.top(), operatorCode);
+        if (!isCorrect)
+        {
+            throwSyntaxErrorMessage();
+        }
     }
 
     void nestingHandler(string word)
