@@ -46,11 +46,12 @@ public:
         }
     }
 
-    int getShortestWay()
+    vector<Sheet> getShortestWay()
     {
         int currVertexNumber;
         while (!Queue.empty()) 
         {
+            listOfSheets.clear();
             for (size_t i = 1; i <= Queue.size() + 1; i++)
             {
                 currVertexNumber = Queue.front();
@@ -77,7 +78,7 @@ public:
             excludeSheets();
         }
 
-         return currVertexNumber;
+         return listOfSheets;
     }
 
 private:
@@ -95,7 +96,6 @@ private:
             adjacencyList[sheet.vertexNumber].vertexes.erase(sheet.vertex);
             adjacencyList[sheet.vertex].quantity--;
         }
-        listOfSheets.clear();
     }
 
     bool isSheet(int quantity)

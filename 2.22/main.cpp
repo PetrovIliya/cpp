@@ -7,6 +7,11 @@ using namespace std;
 int main()
 {  
     Handler handler(FILE_NAME);
-    cout << handler.getShortestWay();
+    vector<Sheet> test =  handler.getShortestWay();
+    for (Sheet sheet : test)
+    {
+        cout << sheet.vertex;
+    }
+    
     return 0;
 }
