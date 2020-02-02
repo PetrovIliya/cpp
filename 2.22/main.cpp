@@ -27,6 +27,7 @@
 нахождение листьев бескорневого дерева из условия задачи (15). */
 
 #include "src/Handler/Handler.h"
+#include <ofstream>
 
 using namespace std;
 
@@ -37,7 +38,8 @@ int main()
 {  
     Handler handler(FILE_NAME);
     vector<Sheet> computers =  handler.getShortestWay();
-    fstream file(OUTPUT_FILE_NAME);
+    remove(OUTPUT_FILE_NAME);
+    ofstream file(OUTPUT_FILE_NAME);
     file.clear();
     file << computers.size() << '\n';
     for (Sheet computer: computers)
