@@ -39,10 +39,24 @@ private:
     int quantityOfVertex;
     map<int, VertexData> adjacencyList;
 
+    void checkForDigit(string arg)
+    {
+        for (char s : arg)
+        {
+            if (!isdigit(s))
+            {
+                cout << "entered data is not a digit";
+                throw exception();
+            }
+        }
+    }
+
     void setQuantityOfVertex(fstream &file)
     {
         string readString;
         getline(file, readString);
+        checkForDigit(readString);
+        
         quantityOfVertex = stoi(readString);
     }
 
@@ -62,18 +76,23 @@ private:
         {
             quantiyOfLines++;
             std::istringstream in(readString);
-            int a, b;
-            in >> a >> b;
-            adjacencyList[a].vertexes[adjacencyList[a].vertexes.size()] = b;
-            adjacencyList[b].vertexes[adjacencyList[b].vertexes.size()] = a;
+            string from, to;
+            in >> from >> to;
+            checkForDigit(from);
+            checkForDigit(to);
+            int fromInt, toInt;
+            fromInt = stoi(from);
+            toInt = stoi(to);
+        
+            adjacencyList[fromInt].vertexes[adjacencyList[fromInt].vertexes.size()] = toInt;
+            adjacencyList[toInt].vertexes[adjacencyList[toInt].vertexes.size()] = fromInt;
         }
 
         if (quantiyOfLines != quantityOfVertex - 1)
         {
             cout << "warning: invalid quantity of parameters";
             throw exception();
-        }
-        
+        }   
     }
 };
 

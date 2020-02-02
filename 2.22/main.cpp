@@ -1,4 +1,6 @@
-/* В офисе  фирмы  Megasoft  установлены  N  компьютеров  с 
+/* 
+Петров Илья
+В офисе  фирмы  Megasoft  установлены  N  компьютеров  с 
 номерами от 1 до N, некоторые из них  соединены  между  собой. 
 Сообщение между соединенными компьютерами проходит в любом  из 
 двух направлений за 1 с. Компьютер,  получив  сообщение, сразу 
@@ -43,6 +45,7 @@ int main()
         vector<Sheet> computers =  handler.getShortestWay();
         remove(OUTPUT_FILE_NAME);
         ofstream file(OUTPUT_FILE_NAME);
+        
         file << computers.size() << '\n';
         for (Sheet computer: computers)
         {

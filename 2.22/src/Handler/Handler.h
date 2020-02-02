@@ -20,6 +20,11 @@ public:
     Handler(string fileName)
     {
         fstream file(fileName);
+        if (!file.is_open())
+        {
+            cout << "no input file!";
+            throw exception();
+        }
         AdjacencyList adjacencyListObject(file);
         Handler::adjacencyListObject = adjacencyListObject;
         adjacencyList = adjacencyListObject.getAdjacencyList();
