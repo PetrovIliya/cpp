@@ -25,26 +25,10 @@ public:
         adjacencyList = adjacencyListObject.getAdjacencyList();
         quantityOfVertex = adjacencyListObject.getQuantityOfVertex();
         initQueue();
-        
+
         file.close();
     }
 
-    void test2()
-    {
-        
-    }
-
-    void test()
-    {
-        for (size_t i = 1; i <= quantityOfVertex; i++)
-        {
-            for (size_t j = 0; j < adjacencyList[i].vertexes.size(); j++)
-            {
-                cout << adjacencyList[i].vertexes[j];
-            }
-            cout << ' ' << adjacencyList[i].quantity << endl;
-        }
-    }
 
     vector<Sheet> getShortestWay()
     {
@@ -52,14 +36,19 @@ public:
         while (!Queue.empty()) 
         {
             listOfSheets.clear();
-            for (size_t i = 1; i <= Queue.size() + 1; i++)
+            for (size_t i = 1; i <= adjacencyList.size(); i++)
             {
                 currVertexNumber = Queue.front();
                 Queue.pop();
 
-                if (adjacencyList[currVertexNumber].quantity == 0)
+                if (isUsed(adjacencyList[currVertexNumber].quantity))
                 {
-                    return currVertexNumber;
+                    listOfSheets.clear();
+                    Sheet sheet;
+                    sheet.vertexNumber = currVertexNumber;
+                    listOfSheets.push_back(sheet);
+                    
+                    return listOfSheets;
                 }
                 
                 if (!isSheet(adjacencyList[currVertexNumber].quantity))
@@ -70,8 +59,15 @@ public:
                 {
                     Sheet sheet;
                     sheet.vertexNumber = currVertexNumber;
-                    sheet.vertex = adjacencyList[currVertexNumber].vertexes[0];
-
+                    for (int j = 0; j < adjacencyList[currVertexNumber].vertexes.size(); j++)
+                    {
+                        if (adjacencyList[currVertexNumber].vertexes[j] != -1)
+                        {
+                            sheet.vertex = adjacencyList[currVertexNumber].vertexes[j];
+                            break;
+                        }      
+                    }
+                    
                     listOfSheets.push_back(sheet);
                 }
             }
@@ -92,22 +88,29 @@ private:
     void excludeSheets()
     {
         for (Sheet sheet : listOfSheets)
-        {
-            adjacencyList[sheet.vertexNumber].vertexes.erase(sheet.vertex);
+        {       
             adjacencyList[sheet.vertex].quantity--;
-        }
+            for (size_t i = 0; i < adjacencyList[sheet.vertex].vertexes.size(); i++)
+            {
+                if (adjacencyList[sheet.vertex].vertexes[i] == sheet.vertexNumber)
+                {
+                    adjacencyList[sheet.vertex].vertexes[i] = -1;
+                    break;
+                }     
+            }
+            
+            adjacencyList.erase(sheet.vertexNumber);
+        }  
     }
 
     bool isSheet(int quantity)
     {
-        if (quantity == 1)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return quantity == 1;
+    }
+
+    bool isUsed(int quantity)
+    {
+        return quantity == 0;
     }
 
     void initQueue()
