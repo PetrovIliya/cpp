@@ -33,18 +33,27 @@ using namespace std;
 #define FILE_NAME "INPUT.txt"
 #define OUTPUT_FILE_NAME "OUTPUT.TXT"
 
+
+
 int main()
 {  
-    Handler handler(FILE_NAME);
-    vector<Sheet> computers =  handler.getShortestWay();
-    remove(OUTPUT_FILE_NAME);
-    ofstream file(OUTPUT_FILE_NAME);
-    file << computers.size() << '\n';
-    for (Sheet computer: computers)
+    try
     {
-        file << computer.vertexNumber << ' ';
+        Handler handler(FILE_NAME);
+        vector<Sheet> computers =  handler.getShortestWay();
+        remove(OUTPUT_FILE_NAME);
+        ofstream file(OUTPUT_FILE_NAME);
+        file << computers.size() << '\n';
+        for (Sheet computer: computers)
+        {
+            file << computer.vertexNumber << ' ';
+        }
+        file.close();
     }
-    file.close();
+    catch(const exception& e)
+    {
+        return EXIT_FAILURE;
+    }
     
     return 0;
 }

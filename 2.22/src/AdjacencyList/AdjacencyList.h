@@ -56,15 +56,24 @@ private:
 
     void setAdjacencyList(fstream &file)
     {
+        int quantiyOfLines = 0;
         string readString;
         while (getline(file, readString))
         {
+            quantiyOfLines++;
             std::istringstream in(readString);
             int a, b;
             in >> a >> b;
             adjacencyList[a].vertexes[adjacencyList[a].vertexes.size()] = b;
             adjacencyList[b].vertexes[adjacencyList[b].vertexes.size()] = a;
         }
+
+        if (quantiyOfLines != quantityOfVertex - 1)
+        {
+            cout << "warning: invalid quantity of parameters";
+            throw exception();
+        }
+        
     }
 };
 
