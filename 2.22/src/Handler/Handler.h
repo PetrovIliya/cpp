@@ -58,11 +58,6 @@ public:
             }
         }
 
-        if (Queue.size() == 1)
-        {
-            return {Queue.front()};
-        }
-        
         int preFinalVertex =  Queue.front();
         Queue.pop();
         int finalVertex = Queue.front();

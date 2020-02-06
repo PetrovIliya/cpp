@@ -20,11 +20,11 @@ public:
     AdjacencyList(fstream &file)
     {
         setQuantityOfVertex(file);
-        if (quantityOfVertex < 1)
+        if (quantityOfVertex < 2)
         {
             cout << "wrong quantity of vertexes";
             throw exception();
-        }
+        }      
         
         setAdjacencyList(file);
         setQuantityForEachVortexAndQueue();
