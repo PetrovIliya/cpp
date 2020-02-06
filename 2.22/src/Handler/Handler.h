@@ -7,12 +7,6 @@
 
 using namespace std;
 
-struct Sheet
-{
-    int vertex;
-    int vertexNumber;
-};
-
 class Handler
 {
 public:
@@ -26,86 +20,77 @@ public:
             throw exception();
         }
         AdjacencyList adjacencyListObject(file);
-        Handler::adjacencyListObject = adjacencyListObject;
         adjacencyList = adjacencyListObject.getAdjacencyList();
         quantityOfVertex = adjacencyListObject.getQuantityOfVertex();
-        initQueue();
+        Handler::Queue = adjacencyListObject.getQueueOfSheets();
+        cout << "Data initialized" << '\n';
 
         file.close();
     }
 
-
-    vector<Sheet> getShortestWay()
+    vector<int> getShortestWay()
     {
-        int currVertexNumber;
-        while (!Queue.empty()) 
+        cout << "Searching..." << '\n';
+        int count = 0;
+        int currVertexNumber = 0;
+        int adjencyVertex;
+        while (quantityOfVertex > 2 && count < quantityOfVertex - 2) 
         {
-            listOfSheets.clear();
-            for (size_t i = 1; i <= adjacencyList.size(); i++)
-            {
-                currVertexNumber = Queue.front();
-                Queue.pop();
+            count++;
+            currVertexNumber = Queue.front();
+            Queue.pop();
 
-                if (isUsed(adjacencyList[currVertexNumber].quantity))
+            for (int j = 0; j < adjacencyList[currVertexNumber].vertexes.size(); j++)
+            {
+                if (adjacencyList[currVertexNumber].vertexes[j] != -1)
                 {
-                    listOfSheets.clear();
-                    Sheet sheet;
-                    sheet.vertexNumber = currVertexNumber;
-                    listOfSheets.push_back(sheet);
-                    
-                    return listOfSheets;
-                }
-                
-                if (!isSheet(adjacencyList[currVertexNumber].quantity))
-                {
-                    Queue.push(currVertexNumber);
-                }
-                else
-                {
-                    Sheet sheet;
-                    sheet.vertexNumber = currVertexNumber;
-                    for (int j = 0; j < adjacencyList[currVertexNumber].vertexes.size(); j++)
-                    {
-                        if (adjacencyList[currVertexNumber].vertexes[j] != -1)
-                        {
-                            sheet.vertex = adjacencyList[currVertexNumber].vertexes[j];
-                            break;
-                        }      
-                    }
-                    
-                    listOfSheets.push_back(sheet);
-                }
+                    adjencyVertex =  adjacencyList[currVertexNumber].vertexes[j];
+                    break;
+                }    
             }
-            excludeSheets();
+
+            excludeSheet(currVertexNumber, adjencyVertex);
+            adjacencyList[adjencyVertex].length = adjacencyList[currVertexNumber].length + 1;
+                        
+            if (isSheet(adjacencyList[adjencyVertex].quantity))
+            {
+                Queue.push(adjencyVertex);
+            }
         }
 
-         return listOfSheets;
+        int preFinalVertex =  Queue.front();
+        Queue.pop();
+        int finalVertex = Queue.front();
+        int tempLength = adjacencyList[preFinalVertex].length;
+        adjacencyList[preFinalVertex].length = adjacencyList[finalVertex].length + 1;
+        adjacencyList[finalVertex].length = tempLength + 1;
+
+        if (adjacencyList[finalVertex].length  ==  adjacencyList[preFinalVertex].length)
+        {
+            return {preFinalVertex, finalVertex};
+        }
+        else if (adjacencyList[finalVertex].length  <  adjacencyList[preFinalVertex].length)
+        {
+            return {finalVertex};
+        }
+        else
+        {
+           return {preFinalVertex};
+        }               
     }
 
 private:
-    AdjacencyList adjacencyListObject;
     map<int, VertexData> adjacencyList;
-    vector<Sheet> listOfSheets;
+    vector <int> finalVertexes;
     int quantityOfVertex;
     queue<int> Queue;
     map<int, VertexData>::iterator cur, end;
 
-    void excludeSheets()
-    {
-        for (Sheet sheet : listOfSheets)
-        {       
-            adjacencyList[sheet.vertex].quantity--;
-            for (size_t i = 0; i < adjacencyList[sheet.vertex].vertexes.size(); i++)
-            {
-                if (adjacencyList[sheet.vertex].vertexes[i] == sheet.vertexNumber)
-                {
-                    adjacencyList[sheet.vertex].vertexes[i] = -1;
-                    break;
-                }     
-            }
-            
-            adjacencyList.erase(sheet.vertexNumber);
-        }  
+    void excludeSheet(int vertex, int adjencyVertex)
+    {     
+        adjacencyList[adjencyVertex].quantity--;
+        int indexOfSheet = adjacencyList[adjencyVertex].vertexesPtrs[vertex];
+        adjacencyList[adjencyVertex].vertexes[indexOfSheet] = -1;
     }
 
     bool isSheet(int quantity)
@@ -116,13 +101,5 @@ private:
     bool isUsed(int quantity)
     {
         return quantity == 0;
-    }
-
-    void initQueue()
-    {
-        for (size_t i = 1; i <= quantityOfVertex; i++)
-        {
-            Queue.push(i);
-        }
     }
 };

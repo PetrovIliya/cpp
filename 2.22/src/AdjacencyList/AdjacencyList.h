@@ -9,7 +9,9 @@ using namespace std;
 struct VertexData
 {
     map <int, int> vertexes;
+    map <int, int> vertexesPtrs;
     int quantity = 0;
+    int length = 0;
 };
 
 class AdjacencyList
@@ -19,7 +21,7 @@ public:
     {
         setQuantityOfVertex(file);
         setAdjacencyList(file);
-        setQuantityForEachVortex();
+        setQuantityForEachVortexAndQueue();
     }
 
     AdjacencyList()
@@ -35,9 +37,15 @@ public:
           return quantityOfVertex;
       }
 
+       queue<int> getQueueOfSheets()
+       {
+           return queueOfSheets;
+       }
+
 private:
     int quantityOfVertex;
     map<int, VertexData> adjacencyList;
+    queue<int> queueOfSheets;
 
     void checkForDigit(string arg)
     {
@@ -60,11 +68,17 @@ private:
         quantityOfVertex = stoi(readString);
     }
 
-    void setQuantityForEachVortex()
+    void setQuantityForEachVortexAndQueue()
     {
         for (size_t i = 1; i <= quantityOfVertex; i++)
-        {
-            adjacencyList[i].quantity = adjacencyList[i].vertexes.size();
+        {  
+            int quantity = adjacencyList[i].vertexes.size();
+            adjacencyList[i].quantity = quantity;
+            if (quantity == 1) //Лист найден
+            {
+                queueOfSheets.push(i);
+            }
+            
         }
     }
 
@@ -78,14 +92,19 @@ private:
             std::istringstream in(readString);
             string from, to;
             in >> from >> to;
-            checkForDigit(from);
-            checkForDigit(to);
+            // checkForDigit(from); Для более высококой производительности убрал проверку
+            // checkForDigit(to);
             int fromInt, toInt;
             fromInt = stoi(from);
             toInt = stoi(to);
+
+            int fromMapSize = adjacencyList[fromInt].vertexes.size();
+            int toMapSize = adjacencyList[toInt].vertexes.size();
         
-            adjacencyList[fromInt].vertexes[adjacencyList[fromInt].vertexes.size()] = toInt;
-            adjacencyList[toInt].vertexes[adjacencyList[toInt].vertexes.size()] = fromInt;
+            adjacencyList[fromInt].vertexes[fromMapSize] = toInt;
+            adjacencyList[fromInt].vertexesPtrs[toInt] = fromMapSize;
+            adjacencyList[toInt].vertexes[toMapSize] = fromInt;
+            adjacencyList[toInt].vertexesPtrs[fromInt] = toMapSize;
         }
 
         if (quantiyOfLines != quantityOfVertex - 1)

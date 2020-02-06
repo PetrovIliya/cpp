@@ -42,16 +42,17 @@ int main()
     try
     {
         Handler handler(FILE_NAME);
-        vector<Sheet> computers =  handler.getShortestWay();
+        vector<int> computers =  handler.getShortestWay();
         remove(OUTPUT_FILE_NAME);
         ofstream file(OUTPUT_FILE_NAME);
         
         file << computers.size() << '\n';
-        for (Sheet computer: computers)
+        for (int computer: computers)
         {
-            file << computer.vertexNumber << ' ';
+            file << computer << ' ';
         }
         file.close();
+        cout << "Done";
     }
     catch(const exception& e)
     {
