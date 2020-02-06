@@ -20,7 +20,7 @@ public:
     AdjacencyList(fstream &file)
     {
         setQuantityOfVertex(file);
-        if (quantityOfVertex < 2)
+        if (quantityOfVertex < 1)
         {
             cout << "wrong quantity of vertexes";
             throw exception();
@@ -76,6 +76,12 @@ private:
 
     void setQuantityForEachVortexAndQueue()
     {
+        if (quantityOfVertex == 1)
+        {
+            queueOfSheets.push(1);
+            return;
+        }
+        
         for (size_t i = 1; i <= quantityOfVertex; i++)
         {  
             int quantity = adjacencyList[i].vertexes.size();
