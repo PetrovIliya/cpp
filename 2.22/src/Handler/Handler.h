@@ -39,16 +39,7 @@ public:
             count++;
             currVertexNumber = Queue.front();
             Queue.pop();
-
-            for (int j = 0; j < adjacencyList[currVertexNumber].vertexes.size(); j++)
-            {
-                if (adjacencyList[currVertexNumber].vertexes[j] != -1)
-                {
-                    adjencyVertex =  adjacencyList[currVertexNumber].vertexes[j];
-                    break;
-                }    
-            }
-
+            adjencyVertex =  adjacencyList[currVertexNumber].vertexes[adjacencyList[currVertexNumber].vertexes.begin()->first];
             excludeSheet(currVertexNumber, adjencyVertex);
             adjacencyList[adjencyVertex].length = adjacencyList[currVertexNumber].length + 1;
                         
@@ -95,7 +86,7 @@ private:
     {     
         adjacencyList[adjencyVertex].quantity--;
         int indexOfSheet = adjacencyList[adjencyVertex].vertexesPtrs[vertex];
-        adjacencyList[adjencyVertex].vertexes[indexOfSheet] = -1;
+        adjacencyList[adjencyVertex].vertexes.erase(indexOfSheet);
     }
 
     bool isSheet(int quantity)
