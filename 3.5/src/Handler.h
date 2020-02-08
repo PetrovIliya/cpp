@@ -1,5 +1,4 @@
 #include "Matrix.h"
-#include <iterator>
 
 class Handler
 {
@@ -14,7 +13,7 @@ public:
     void searchWay()
     {
         Mark marks[matrixSize];
-        vector <int> userInput = getUserInput(matrixSize);
+        vector <int> userInput = getUserInput();
 
         for (int i = 0; i < matrixSize; i++) 
         {
@@ -104,7 +103,7 @@ private:
         return marks[matrixSize];
     }
 
-    vector <int> getUserInput(int matrixSize)
+    vector <int> getUserInput()
     {
         int startVertex;
         int endVertex;
@@ -112,21 +111,21 @@ private:
         {
             cout << endl << "enter number of start vertex: ";
             cin >> startVertex;
-            if (isCorrectInput(startVertex, matrixSize))
+            if (isCorrectInput(startVertex))
                 break;
         }
         while (true)
         {
             cout << endl << "enter number of end vertex: ";
             cin >> endVertex;
-            if (isCorrectInput(endVertex, matrixSize))
+            if (isCorrectInput(endVertex))
                 break;
         }
 
         return {startVertex - 1, endVertex - 1};        
     }
 
-    bool isCorrectInput(int input, int matrixSize)
+    bool isCorrectInput(int input)
     {
         if(cin.good()) 
         {
