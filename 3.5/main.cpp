@@ -14,7 +14,7 @@ int main()
     try
     {
         Handler handler;
-        handler.searchWay();
+        handler.searchShortestWay();
     }
     catch(const std::exception& e)
     {

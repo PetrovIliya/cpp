@@ -6,7 +6,7 @@
 
 #define CITY_FILE_NAME "cities.txt"
 #define ROAD_FILE_NAME "roads.txt"
-#define MAX_VALUE 999;
+#define MAX_VALUE INT_MAX;
 
 using namespace std;
 
@@ -93,20 +93,26 @@ private:
 
     void printMatrix()
     {
+        int maxLength = 10;
         for(int j = 0; j < matrixSize; j++)
         {
             for(int i = 0; i < matrixSize; i++)
             {
-                if (matrix[i][j] / 100 < 1) 
-                {
-                    cout << " " << matrix[i][j] << "   ";
-                }
-                else 
-                {
-                    cout << matrix[i][j] << "  ";
-                }
+                int length = to_string(matrix[i][j]).length();
+                int currLength = maxLength - length;
+                printSpacesByLength(currLength / 2);
+                cout << matrix[i][j];
+                printSpacesByLength(currLength / 2 + 4);
             }
             cout << endl;
+        }
+    }
+
+    void printSpacesByLength(int length)
+    {
+        for (size_t n = 0; n < length; n++)
+        {
+            cout << " ";
         }
     }
 

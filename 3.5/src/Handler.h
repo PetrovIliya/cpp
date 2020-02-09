@@ -10,7 +10,7 @@ public:
         matrixSize = matrixObj.getMatrixSize();
     }
 
-    void searchWay()
+    void searchShortestWay()
     {
         Mark marks[matrixSize];
         vector <int> userInput = getUserInput();
