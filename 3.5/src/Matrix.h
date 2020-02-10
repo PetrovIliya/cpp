@@ -3,10 +3,11 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <sstream>
 
 #define CITY_FILE_NAME "cities.txt"
 #define ROAD_FILE_NAME "roads.txt"
-#define MAX_VALUE INT_MAX;
+#define MAX_VALUE 99999999;
 
 using namespace std;
 
@@ -93,7 +94,7 @@ private:
 
     void printMatrix()
     {
-        int maxLength = 10;
+        int maxLength = 8;
         for(int j = 0; j < matrixSize; j++)
         {
             for(int i = 0; i < matrixSize; i++)
@@ -102,7 +103,7 @@ private:
                 int currLength = maxLength - length;
                 printSpacesByLength(currLength / 2);
                 cout << matrix[i][j];
-                printSpacesByLength(currLength / 2 + 4);
+                printSpacesByLength(currLength / 2 + 5);
             }
             cout << endl;
         }
@@ -129,11 +130,14 @@ private:
     Road getRoad(string roadInfo)
     {
         Road road;
+        std::istringstream in(roadInfo);
+        string from, to, length, isDangerius;
+        in >> from >> to >> length >> isDangerius;
     
-        road.from = charToInt(roadInfo[0]);
-        road.to = charToInt(roadInfo[2]);
-        road.length = charToInt(roadInfo[4]);
-        if (roadInfo[6] == 'y') 
+        road.from = stoi(from);
+        road.to = stoi(to);
+        road.length = stoi(length);
+        if (isDangerius == "y") 
         {
             road.length *= 100;
         }
